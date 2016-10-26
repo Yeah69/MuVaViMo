@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuVaViMo", "MuVaViMo\MuVaViMo.csproj", "{3350098F-FCE9-45C7-8DFE-EFB411747F31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuVaViMo.Tests", "MuVaViMo.Tests\MuVaViMo.Tests.csproj", "{FF963890-F971-4936-81D0-908C6AC031B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuVaViMo.WPFDemo", "MuVaViMo.WPFDemo\MuVaViMo.WPFDemo.csproj", "{F589B130-80B8-4D04-86C7-26FC9809CF0E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3350098F-FCE9-45C7-8DFE-EFB411747F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3350098F-FCE9-45C7-8DFE-EFB411747F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3350098F-FCE9-45C7-8DFE-EFB411747F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3350098F-FCE9-45C7-8DFE-EFB411747F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF963890-F971-4936-81D0-908C6AC031B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF963890-F971-4936-81D0-908C6AC031B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF963890-F971-4936-81D0-908C6AC031B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF963890-F971-4936-81D0-908C6AC031B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F589B130-80B8-4D04-86C7-26FC9809CF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F589B130-80B8-4D04-86C7-26FC9809CF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F589B130-80B8-4D04-86C7-26FC9809CF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F589B130-80B8-4D04-86C7-26FC9809CF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
