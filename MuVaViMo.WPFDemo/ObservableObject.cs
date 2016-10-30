@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MuVaViMo.WPFDemo.Annotations;
+using MuVaViMo.WPFDemo.Properties;
 
 namespace MuVaViMo.WPFDemo
 {

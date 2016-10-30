@@ -8,7 +8,7 @@
     <owners>Yeah69</owners>
     <licenseUrl>https://github.com/Yeah69/MuVaViMo/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/Yeah69/MuVaViMo</projectUrl>
-    <iconUrl>https://github.com/Yeah69/MuVaViMo/blob/master/Icon/nuget_icon.png</iconUrl>
+    <iconUrl>https://github.com/Yeah69/MuVaViMo/Icon/nuget_icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial - Added TransformingObservableCollectionWrapper.</releaseNotes>
