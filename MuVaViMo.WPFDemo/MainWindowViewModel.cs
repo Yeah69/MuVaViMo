@@ -13,7 +13,11 @@ namespace MuVaViMo.WPFDemo
         public TransformingObservableCollectionWrapper<Model, ViewModel> ViewModels { get; }
 
         public ICommand IncreaseCommand => new AlwaysExecutableRelayCommand(obj => _models.Add(new Model(i++)));
-        public ICommand DecreaseCommand => new AlwaysExecutableRelayCommand(obj => _models.RemoveAt((int) obj));
+        public ICommand DecreaseCommand => new AlwaysExecutableRelayCommand(obj =>
+                                                                            {
+                                                                                if((int)obj > -1)
+                                                                                    _models.RemoveAt((int) obj);
+                                                                            });
 
         public MainWindowViewModel()
         {

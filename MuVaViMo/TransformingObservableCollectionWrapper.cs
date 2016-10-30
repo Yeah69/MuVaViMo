@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace MuVaViMo
 {
-    public class TransformingObservableCollectionWrapper<TSource, TResult> : IReadOnlyCollection<TResult>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class TransformingObservableCollectionWrapper<TSource, TResult> : IReadOnlyList<TResult>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private readonly Collection<TResult> _backingCollection = new Collection<TResult>();
 
@@ -81,6 +81,12 @@ namespace MuVaViMo
 
         protected void RaisePropertyChanged([CallerMemberName] string name = "") =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        #endregion
+
+        #region Implementation of IReadOnlyList<out TResult>
+
+        public TResult this[int index] => _backingCollection[index];
 
         #endregion
     }
