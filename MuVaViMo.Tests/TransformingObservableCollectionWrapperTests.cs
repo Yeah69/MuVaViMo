@@ -13,7 +13,7 @@ namespace MuVaViMo.Tests
             public A A { get; set; }
         }
 
-        ObservableCollection<A> FilledSourceCollection => new ObservableCollection<A> {new A(), new A(), new A()};
+        ObservableCollection<A> FilledSourceCollection => new ObservableCollection<A> {new A(), new A(), new A(), new A(), new A(), new A() };
 
         [Fact]
         public void EmptySourceCollection()
@@ -153,6 +153,59 @@ namespace MuVaViMo.Tests
             filledCollection.Clear();
 
             //Assert
+            StandardCheck(filledCollection, collectionWrapper);
+        }
+
+        [Fact]
+        public void OnReplace()
+        {
+            //Arrange
+            ObservableCollection<A> filledCollection = FilledSourceCollection;
+            A replacingA = new A();
+            int replaceIndex = 1;
+            TransformingObservableCollectionWrapper<A, B> collectionWrapper =
+                new TransformingObservableCollectionWrapper<A, B>(filledCollection, a => new B { A = a });
+            B replacedB = collectionWrapper[replaceIndex];
+            collectionWrapper.CollectionChanged += (sender, args) =>
+            {
+                Assert.Equal(NotifyCollectionChangedAction.Replace, args.Action);
+                Assert.Equal(replaceIndex, args.OldStartingIndex);
+                Assert.Equal(replaceIndex, args.NewStartingIndex);
+                Assert.Same(replacingA, ((B)args.NewItems[0]).A);
+            };
+
+            //Act
+            filledCollection[replaceIndex] = replacingA;
+
+            //Assert
+            Assert.NotSame(replacedB, collectionWrapper[replaceIndex]); //B should be actually replaced. No recycling of B objects!
+            StandardCheck(filledCollection, collectionWrapper);
+        }
+
+        [Fact]
+        public void OnMove()
+        {
+            //Arrange
+            ObservableCollection<A> filledCollection = FilledSourceCollection;
+            int moveFromIndex = 1;
+            int moveToIndex = 3;
+            A movedA = filledCollection[moveFromIndex];
+            TransformingObservableCollectionWrapper<A, B> collectionWrapper =
+                new TransformingObservableCollectionWrapper<A, B>(filledCollection, a => new B { A = a });
+            B movedB = collectionWrapper[moveFromIndex];
+            collectionWrapper.CollectionChanged += (sender, args) =>
+            {
+                Assert.Equal(NotifyCollectionChangedAction.Move, args.Action);
+                Assert.Equal(moveFromIndex, args.OldStartingIndex);
+                Assert.Equal(moveToIndex, args.NewStartingIndex);
+                Assert.Same(movedA, ((B)args.NewItems[0]).A);
+            };
+
+            //Act
+            filledCollection.Move(moveFromIndex, moveToIndex);
+
+            //Assert
+            Assert.Same(movedB, collectionWrapper[moveToIndex]); //Check that the corresponding B object was moved and no new instance was created
             StandardCheck(filledCollection, collectionWrapper);
         }
 

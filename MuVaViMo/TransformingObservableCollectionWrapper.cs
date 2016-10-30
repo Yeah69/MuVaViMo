@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace MuVaViMo
 {
     public class TransformingObservableCollectionWrapper<TSource, TResult> : IReadOnlyList<TResult>, INotifyCollectionChanged, INotifyPropertyChanged
     {
-        private readonly Collection<TResult> _backingCollection = new Collection<TResult>();
+        private readonly List<TResult> _backingCollection = new List<TResult>();
 
         public TransformingObservableCollectionWrapper(ObservableCollection<TSource> source, Func<TSource, TResult> transform)
         {
@@ -21,24 +20,43 @@ namespace MuVaViMo
 
             source.CollectionChanged += (sender, args) =>
             {
-                switch(args.Action)
+                //Keep in mind the source is an ObservableCollection.
+                //Thus, each CollectionChanged event has at most one item in NewItems and/or OldItems.
+                //http://www.codeproject.com/Articles/1004644/ObservableCollection-Simply-Explained
+                switch (args.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
                         TResult newItem = transform((TSource) args.NewItems[0]);
                         _backingCollection.Insert(args.NewStartingIndex, newItem);
-                        RaiseCollectionChanged(NotifyCollectionChangedAction.Add, newItem, args.NewStartingIndex);
-                        RaisePropertyChanged(nameof(_backingCollection.Count));
+                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, 
+                            newItem, args.NewStartingIndex));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Remove:
                         TResult oldItem = _backingCollection[args.OldStartingIndex];
                         _backingCollection.RemoveAt(args.OldStartingIndex);
-                        RaiseCollectionChanged(NotifyCollectionChangedAction.Remove, oldItem, args.OldStartingIndex);
-                        RaisePropertyChanged(nameof(_backingCollection.Count));
+                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, 
+                            oldItem, args.OldStartingIndex));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                        break;
+                    case NotifyCollectionChangedAction.Replace:
+                        TResult replacingItem = transform((TSource) args.NewItems[0]);
+                        TResult replacedItem = _backingCollection[args.OldStartingIndex];
+                        _backingCollection[args.OldStartingIndex] = replacingItem;
+                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, 
+                            replacingItem, replacedItem, args.OldStartingIndex));
+                        break;
+                    case NotifyCollectionChangedAction.Move:
+                        TResult movedItem = _backingCollection[args.OldStartingIndex];
+                        _backingCollection.RemoveAt(args.OldStartingIndex);
+                        _backingCollection.Insert(args.NewStartingIndex, movedItem);
+                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, 
+                            movedItem, args.NewStartingIndex, args.OldStartingIndex));
                         break;
                     case NotifyCollectionChangedAction.Reset:
                         _backingCollection.Clear();
                         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                        RaisePropertyChanged(nameof(_backingCollection.Count));
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     default:
                         throw new Exception("Something unexpected happened with the source collection.");
@@ -70,17 +88,11 @@ namespace MuVaViMo
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        protected void RaiseCollectionChanged(NotifyCollectionChangedAction action, object item, int index) =>
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, item, index));
-
         #endregion
 
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged([CallerMemberName] string name = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         #endregion
 
