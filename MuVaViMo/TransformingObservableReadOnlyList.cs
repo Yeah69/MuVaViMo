@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace MuVaViMo
 {
@@ -41,35 +42,69 @@ namespace MuVaViMo
                 switch(args.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        TResult newItem = transform((TSource) args.NewItems[0]);
-                        _backingList.Insert(args.NewStartingIndex, newItem);
+                        int i = args.NewStartingIndex;
+                        IList newItems = new List<TResult>();
+                        foreach(TSource item in args.NewItems.Cast<TSource>())
+                        { 
+                            TResult newItem = transform(item);
+                            newItems.Add(newItem);
+                            _backingList.Insert(i++, transform(item));
+                        }
                         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
-                                                                                             newItem, args.NewStartingIndex));
+                                                                                             newItems, args.NewStartingIndex));
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Remove:
-                        TResult oldItem = _backingList[args.OldStartingIndex];
-                        _backingList.RemoveAt(args.OldStartingIndex);
+                        IList oldItems = new List<TResult>();
+                        foreach(object argsOldItem in args.OldItems)
+                        {
+                            TResult oldItem = _backingList[args.OldStartingIndex];
+                            oldItems.Add(oldItem);
+                            _backingList.RemoveAt(args.OldStartingIndex);
+                        }
                         CollectionChanged?.Invoke(this,
                                                   new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-                                                                                       oldItem, args.OldStartingIndex));
+                                                                                       oldItems, args.OldStartingIndex));
                         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Replace:
-                        TResult replacingItem = transform((TSource) args.NewItems[0]);
-                        TResult replacedItem = _backingList[args.OldStartingIndex];
-                        _backingList[args.OldStartingIndex] = replacingItem;
+                        IList replacedItems = new List<TResult>();
+                        IList replacingItems = new List<TResult>();
+                        foreach (object argsOldItem in args.OldItems)
+                        {
+                            TResult oldItem = _backingList[args.OldStartingIndex];
+                            replacedItems.Add(oldItem);
+                            _backingList.RemoveAt(args.OldStartingIndex);
+                        }
+                        int j = args.NewStartingIndex;
+                        foreach (TSource item in args.NewItems.Cast<TSource>())
+                        {
+                            TResult newItem = transform(item);
+                            replacingItems.Add(newItem);
+                            _backingList.Insert(j++, transform(item));
+                        }
                         CollectionChanged?.Invoke(this,
                                                   new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace,
-                                                                                       replacingItem, replacedItem,
+                                                                                       replacingItems, replacedItems,
                                                                                        args.OldStartingIndex));
+                        if(args.OldItems.Count != args.NewItems.Count)
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Move:
-                        TResult movedItem = _backingList[args.OldStartingIndex];
-                        _backingList.RemoveAt(args.OldStartingIndex);
-                        _backingList.Insert(args.NewStartingIndex, movedItem);
+                        IList movedItems = new List<TResult>();
+                        foreach(object argsOldItem in args.OldItems)
+                        {
+                            TResult movedItem = _backingList[args.OldStartingIndex];
+                            movedItems.Add(movedItem);
+                            _backingList.RemoveAt(args.OldStartingIndex);
+                        }
+                        int k = args.NewStartingIndex;
+                        foreach(TResult movedItem in movedItems)
+                        {
+                            _backingList.Insert(args.NewStartingIndex, movedItem);
+                        }
                         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move,
-                                                                                             movedItem, args.NewStartingIndex,
+                                                                                             movedItems, args.NewStartingIndex,
                                                                                              args.OldStartingIndex));
                         break;
                     case NotifyCollectionChangedAction.Reset:
