@@ -9,7 +9,7 @@ namespace MuVaViMo.WPFDemo
 
         private readonly ObservableCollection<Model> _models = new ObservableCollection<Model>();
 
-        public TransformingObservableCollectionWrapper<Model, ViewModel> ViewModels { get; }
+        public TransformingObservableReadOnlyList<Model, ViewModel> ViewModels { get; }
 
         public ICommand IncreaseCommand => new AlwaysExecutableRelayCommand(obj => _models.Add(new Model(_i++)));
         public ICommand DecreaseCommand => new AlwaysExecutableRelayCommand(obj =>
@@ -24,7 +24,7 @@ namespace MuVaViMo.WPFDemo
             _models.Add(new Model(_i++));
             _models.Add(new Model(_i++));
             _models.Add(new Model(_i++));
-            ViewModels = new TransformingObservableCollectionWrapper<Model, ViewModel>(_models, model => new ViewModel(model));
+            ViewModels = new TransformingObservableReadOnlyList<Model, ViewModel>(_models, model => new ViewModel(model));
         }
     }
 }

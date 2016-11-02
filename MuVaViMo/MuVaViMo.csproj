@@ -40,7 +40,10 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TransformingObservableCollectionWrapper.cs" />
+    <Compile Include="ConcatenatingObservableReadOnlyList.cs" />
+    <Compile Include="IObservableReadOnlyList.cs" />
+    <Compile Include="WrappingObservableReadOnlyList.cs" />
+    <Compile Include="TransformingObservableReadOnlyList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
