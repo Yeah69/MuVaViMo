@@ -6,18 +6,21 @@
         xmlns:local="clr-namespace:MuVaViMo.WPFDemo"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel>
-        <ListBox x:Name="ViewModelsList" ItemsSource="{Binding ViewModels}">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="local:ViewModel">
-                    <TextBlock Text="{Binding Number}" Background="{Binding Color}"></TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            </ListBox>
-        <StackPanel Orientation="Horizontal">
+    <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
+        <UniformGrid DockPanel.Dock="Bottom">
             <Button Content="Increase" Command="{Binding IncreaseCommand}" />
             <Button Content="Decrease" Command="{Binding DecreaseCommand}" 
                     CommandParameter="{Binding ElementName=ViewModelsList, Path=SelectedIndex}" />
-        </StackPanel>
-    </StackPanel>
+        </UniformGrid>
+        <ScrollViewer DockPanel.Dock="Top">
+            <ListBox x:Name="ViewModelsList" ItemsSource="{Binding ViewModels}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="local:ViewModel">
+                        <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch"
+                                   Background="{Binding Color}" Foreground="White" Padding="5"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+    </DockPanel>
 </Window>
