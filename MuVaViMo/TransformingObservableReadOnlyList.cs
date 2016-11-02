@@ -48,7 +48,7 @@ namespace MuVaViMo
                         { 
                             TResult newItem = transform(item);
                             newItems.Add(newItem);
-                            _backingList.Insert(i++, transform(item));
+                            _backingList.Insert(i++, newItem);
                         }
                         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,
                                                                                              newItems, args.NewStartingIndex));

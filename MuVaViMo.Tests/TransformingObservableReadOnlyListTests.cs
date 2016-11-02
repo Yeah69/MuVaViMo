@@ -58,6 +58,7 @@ namespace MuVaViMo.Tests
                 Assert.Equal(NotifyCollectionChangedAction.Add, args.Action);
                 Assert.Equal(readOnlyList.Count - 1, args.NewStartingIndex);
                 Assert.Same(addedA, ((B)args.NewItems[0]).A);
+                Assert.Same(readOnlyList[readOnlyList.Count - 1], (B)args.NewItems[0]);
             };
 
             //Act
