@@ -34,11 +34,12 @@ namespace MuVaViMo
                     case NotifyCollectionChangedAction.Move:
                     case NotifyCollectionChangedAction.Replace:
                         CollectionChanged?.Invoke(this, args);
+                        if(args.NewItems?.Count != args.OldItems?.Count)
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Reset:
-                        CollectionChanged?.Invoke(this,
-                                                  new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-                                                                                       _firstBackingList, 0));
+                        CollectionChanged?.Invoke(this, args);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     default:
                         throw new Exception("Something unexpected happened with the source collection.");
@@ -76,12 +77,12 @@ namespace MuVaViMo
                                                                                              args.NewItems, args.OldItems,
                                                                                              args.OldStartingIndex +
                                                                                              _firstBackingList.Count));
+                        if (args.NewItems?.Count != args.OldItems?.Count)
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     case NotifyCollectionChangedAction.Reset:
-                        CollectionChanged?.Invoke(this,
-                                                  new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-                                                                                       _secondBackingList,
-                                                                                       _firstBackingList.Count));
+                        CollectionChanged?.Invoke(this, args);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
                         break;
                     default:
                         throw new Exception("Something unexpected happened with the source collection.");

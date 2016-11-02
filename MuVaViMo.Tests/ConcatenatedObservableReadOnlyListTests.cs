@@ -271,13 +271,7 @@ namespace MuVaViMo.Tests
                 new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
             readOnlyList.CollectionChanged += (sender, args) =>
             {
-                Assert.Equal(NotifyCollectionChangedAction.Remove, args.Action);
-                Assert.Equal(0, args.OldStartingIndex);
-                int i = 0;
-                foreach(A a in sourceCollectionA)
-                {
-                    Assert.Same(a, args.OldItems[i++]);
-                }
+                Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
             };
 
             //Act
@@ -299,13 +293,7 @@ namespace MuVaViMo.Tests
                 new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
             readOnlyList.CollectionChanged += (sender, args) =>
             {
-                Assert.Equal(NotifyCollectionChangedAction.Remove, args.Action);
-                Assert.Equal(sourceCollectionA.Count, args.OldStartingIndex);
-                int i = 0;
-                foreach (B b in sourceCollectionB)
-                {
-                    Assert.Same(b, args.OldItems[i++]);
-                }
+                Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
             };
 
             //Act

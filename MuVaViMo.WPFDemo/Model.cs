@@ -21,4 +21,14 @@
             _number = number;
         }
     }
+
+    public class ModelA : Model
+    {
+        public ModelA(int number) : base(number) { }
+    }
+
+    public class ModelB : Model
+    {
+        public ModelB(int number) : base(number) { }
+    }
 }

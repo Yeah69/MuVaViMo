@@ -17,11 +17,25 @@ namespace MuVaViMo.WPFDemo
             }
         }
 
-        public Brush Color => _model.Number % 2 == 0 ? Brushes.Purple : Brushes.Blue;
+        public virtual Brush Color => _model.Number % 2 == 0 ? Brushes.Purple : Brushes.Blue;
 
         public ViewModel(Model model)
         {
             _model = model;
         }
+    }
+
+    public class ViewModelA : ViewModel
+    {
+        public ViewModelA(ModelA model) : base(model) { }
+
+        public virtual Brush Color => Brushes.Chocolate;
+    }
+
+    public class ViewModelB : ViewModel
+    {
+        public ViewModelB(ModelB model) : base(model) { }
+
+        public virtual Brush Color => Brushes.Lime;
     }
 }

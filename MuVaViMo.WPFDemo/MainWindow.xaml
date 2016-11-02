@@ -5,22 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MuVaViMo.WPFDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
-        <UniformGrid DockPanel.Dock="Bottom">
-            <Button Content="Increase" Command="{Binding IncreaseCommand}" />
-            <Button Content="Decrease" Command="{Binding DecreaseCommand}" 
-                    CommandParameter="{Binding ElementName=ViewModelsList, Path=SelectedIndex}" />
-        </UniformGrid>
-        <ScrollViewer DockPanel.Dock="Top">
-            <ListBox x:Name="ViewModelsList" ItemsSource="{Binding ViewModels}" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="local:ViewModel">
-                        <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch"
-                                   Background="{Binding Color}" Foreground="White" Padding="5"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
-    </DockPanel>
+        Title="MainWindow" Height="1000" Width="1000">
+    <TabControl>
+        <TabItem Header="Transforming">
+            <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
+                <UniformGrid DockPanel.Dock="Bottom" Columns="3">
+                    <Button Content="Increase" Command="{Binding IncreaseCommand}" />
+                    <Button Content="Decrease" Command="{Binding DecreaseCommand}" 
+                            CommandParameter="{Binding ElementName=ViewModelsList, Path=SelectedIndex}" />
+                    <Button Content="Clear" Command="{Binding ClearCommand}" />
+                </UniformGrid>
+                <ScrollViewer DockPanel.Dock="Top">
+                    <ListBox x:Name="ViewModelsList" ItemsSource="{Binding ViewModels}" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="local:ViewModel">
+                                <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch"
+                                           Background="{Binding Color}" Foreground="White" Padding="5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Concatenating">
+            <UniformGrid Columns="3">
+                <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
+                    <UniformGrid DockPanel.Dock="Bottom" Columns="3">
+                        <Button Content="Increase" Command="{Binding IncreaseACommand}" />
+                        <Button Content="Decrease" Command="{Binding DecreaseACommand}" 
+                                CommandParameter="{Binding ElementName=ViewModelsList2, Path=SelectedIndex}" />
+                        <Button Content="Clear" Command="{Binding ClearACommand}" />
+                    </UniformGrid>
+                    <ScrollViewer DockPanel.Dock="Top">
+                        <ListBox x:Name="ViewModelsList2" ItemsSource="{Binding ModelsA}" HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="local:ModelA">
+                                    <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch" Padding="5"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </DockPanel>
+                <DockPanel LastChildFill="True" VerticalAlignment="Stretch">
+                    <UniformGrid DockPanel.Dock="Bottom" Columns="3">
+                        <Button Content="Increase" Command="{Binding IncreaseBCommand}" />
+                        <Button Content="Decrease" Command="{Binding DecreaseBCommand}" 
+                                CommandParameter="{Binding ElementName=ViewModelsList3, Path=SelectedIndex}" />
+                        <Button Content="Clear" Command="{Binding ClearBCommand}" />
+                    </UniformGrid>
+                    <ScrollViewer DockPanel.Dock="Top">
+                        <ListBox x:Name="ViewModelsList3" ItemsSource="{Binding ModelsB}" HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="local:ModelB">
+                                    <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch" Padding="5"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </ScrollViewer>
+                </DockPanel>
+                <ScrollViewer DockPanel.Dock="Top">
+                    <ListBox ItemsSource="{Binding ViewModelsAB}" HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="local:ViewModel">
+                                <TextBlock Text="{Binding Number}" HorizontalAlignment="Stretch"
+                                           Background="{Binding Color}" Foreground="White" Padding="5"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </UniformGrid>
+        </TabItem>
+    </TabControl>
 </Window>
