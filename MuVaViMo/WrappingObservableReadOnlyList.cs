@@ -6,10 +6,21 @@ using System.ComponentModel;
 
 namespace MuVaViMo
 {
+    /// <summary>
+    /// Wraps an ObsevableCollection and adds the IObservableReadOnlyList interface to it.
+    /// </summary>
+    /// <typeparam name="T">Item type of the wrapped collection.</typeparam>
     public class WrappingObservableReadOnlyList<T> : IObservableReadOnlyList<T>
     {
+        /// <summary>
+        /// Wrapped collection.
+        /// </summary>
         private readonly ObservableCollection<T> _wrappedCollection;
 
+        /// <summary>
+        /// Constructs a wrapping read only list, which synchronizes with the wrapped collection.
+        /// </summary>
+        /// <param name="wrappedCollection">Wrapped collection.</param>
         public WrappingObservableReadOnlyList(ObservableCollection<T> wrappedCollection)
         {
             _wrappedCollection = wrappedCollection;

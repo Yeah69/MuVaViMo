@@ -11,7 +11,7 @@
     <iconUrl>https://github.com/Yeah69/MuVaViMo/Icon/nuget_icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial - Added TransformingObservableReadOnlyList.</releaseNotes>
+    <releaseNotes>For a better description please visit: https://github.com/Yeah69/MuVaViMo </releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>WPF MVVM</tags>
   </metadata>

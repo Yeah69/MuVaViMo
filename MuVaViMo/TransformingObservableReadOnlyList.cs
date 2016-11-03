@@ -8,12 +8,26 @@ using System.Linq;
 
 namespace MuVaViMo
 {
+    /// <summary>
+    /// This class observes and synchronizes with a observable collection with items of type TSource, but forwards the items transformed to type TResult. 
+    /// </summary>
+    /// <typeparam name="TSource">Item's type of the obseved collection.</typeparam>
+    /// <typeparam name="TResult">Type of the forwarded items.</typeparam>
     public class TransformingObservableReadOnlyList<TSource, TResult> : IObservableReadOnlyList<TResult>
     {
+        /// <summary>
+        /// All transformed items go here. Synchron to the source collection.
+        /// </summary>
         private readonly IList<TResult> _backingList = new List<TResult>();
 
+        /// <summary>
+        /// Constructs a TransformingObservableReadOnlyList synchronizing with an ObservableCollection source.
+        /// </summary>
+        /// <param name="source">Collection to synchronize with.</param>
+        /// <param name="transform">Logic to transform a TSource object to a TResult object.</param>
         public TransformingObservableReadOnlyList(ObservableCollection<TSource> source, Func<TSource, TResult> transform)
         {
+            //The source collection may already have items. Thus, they are transformed and added to the backing list.
             foreach (TSource from in source)
             {
                 _backingList.Add(transform(from));
@@ -22,8 +36,15 @@ namespace MuVaViMo
             ConnectToCollectionChanged(source, transform);
         }
 
+        /// <summary>
+        /// Constructs a TransformingObservableReadOnlyList synchronizing with an IObservableReadOnlyList source.
+        /// Intended to be used only by the constructors.
+        /// </summary>
+        /// <param name="source">List to synchronize with.</param>
+        /// <param name="transform">Logic to transform a TSource object to a TResult object.</param>
         public TransformingObservableReadOnlyList(IObservableReadOnlyList<TSource> source, Func<TSource, TResult> transform)
         {
+            //The source collection may already have items. Thus, they are transformed and added to the backing list.
             foreach (TSource from in source)
             {
                 _backingList.Add(transform(from));
@@ -32,6 +53,11 @@ namespace MuVaViMo
             ConnectToCollectionChanged(source, transform);
         }
 
+        /// <summary>
+        /// Connects the source collection to this collection and forwards the events according to the transforming logic.
+        /// </summary>
+        /// <param name="source">List to synchronize with.</param>
+        /// <param name="transform">Logic to transform a TSource object to a TResult object.</param>
         private void ConnectToCollectionChanged(INotifyCollectionChanged source, Func<TSource, TResult> transform)
         {
             source.CollectionChanged += (sender, args) =>
