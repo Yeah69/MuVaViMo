@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -133,5 +134,36 @@ namespace MuVaViMo
                                         : _secondBackingList[index - _firstBackingList.Count];
 
         #endregion
+
+        public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA, TB>(ObservableCollection<TA> collectionA,
+                                                                                 ObservableCollection<TB> collectionB)
+            where TA : class, T where TB : class, T
+        {
+            IObservableReadOnlyList<T> wrapA = new WrappingObservableReadOnlyList<TA>(collectionA);
+            IObservableReadOnlyList<T> wrapB = new WrappingObservableReadOnlyList<TB>(collectionB);
+            return new ConcatenatingObservableReadOnlyList<T>(wrapA, wrapB);
+        }
+
+        public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA>(ObservableCollection<TA> collectionA,
+                                                                             IObservableReadOnlyList<T> collectionB)
+            where TA : class, T
+        {
+            IObservableReadOnlyList<T> wrapA = new WrappingObservableReadOnlyList<TA>(collectionA);
+            return new ConcatenatingObservableReadOnlyList<T>(wrapA, collectionB);
+        }
+
+        public static ConcatenatingObservableReadOnlyList<T> Concatenate<TB>(IObservableReadOnlyList<T> collectionA,
+                                                                             ObservableCollection<TB> collectionB)
+            where TB : class, T
+        {
+            IObservableReadOnlyList<T> wrapB = new WrappingObservableReadOnlyList<TB>(collectionB);
+            return new ConcatenatingObservableReadOnlyList<T>(collectionA, wrapB);
+        }
+
+        public static ConcatenatingObservableReadOnlyList<T> Concatenate(IObservableReadOnlyList<T> collectionA,
+                                                                             IObservableReadOnlyList<T> collectionB)
+        {
+            return new ConcatenatingObservableReadOnlyList<T>(collectionA, collectionB);
+        }
     }
 }

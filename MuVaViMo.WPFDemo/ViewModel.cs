@@ -29,13 +29,13 @@ namespace MuVaViMo.WPFDemo
     {
         public ViewModelA(ModelA model) : base(model) { }
 
-        public virtual Brush Color => Brushes.Chocolate;
+        public override Brush Color => Brushes.Chocolate;
     }
 
     public class ViewModelB : ViewModel
     {
         public ViewModelB(ModelB model) : base(model) { }
 
-        public virtual Brush Color => Brushes.Lime;
+        public override Brush Color => Brushes.Lime;
     }
 }

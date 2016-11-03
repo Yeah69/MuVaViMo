@@ -36,9 +36,6 @@ namespace MuVaViMo
         {
             source.CollectionChanged += (sender, args) =>
             {
-                //Keep in mind the source is an ObservableCollection.
-                //Thus, each CollectionChanged event has at most one item in NewItems and/or OldItems.
-                //http://www.codeproject.com/Articles/1004644/ObservableCollection-Simply-Explained
                 switch(args.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
@@ -56,7 +53,7 @@ namespace MuVaViMo
                         break;
                     case NotifyCollectionChangedAction.Remove:
                         IList oldItems = new List<TResult>();
-                        foreach(object argsOldItem in args.OldItems)
+                        for(int l = 0; l < args.OldItems.Count; l++)
                         {
                             TResult oldItem = _backingList[args.OldStartingIndex];
                             oldItems.Add(oldItem);
@@ -70,7 +67,7 @@ namespace MuVaViMo
                     case NotifyCollectionChangedAction.Replace:
                         IList replacedItems = new List<TResult>();
                         IList replacingItems = new List<TResult>();
-                        foreach (object argsOldItem in args.OldItems)
+                        for (int l = 0; l < args.OldItems.Count; l++)
                         {
                             TResult oldItem = _backingList[args.OldStartingIndex];
                             replacedItems.Add(oldItem);
@@ -92,7 +89,7 @@ namespace MuVaViMo
                         break;
                     case NotifyCollectionChangedAction.Move:
                         IList movedItems = new List<TResult>();
-                        foreach(object argsOldItem in args.OldItems)
+                        for (int l = 0; l < args.OldItems.Count; l++)
                         {
                             TResult movedItem = _backingList[args.OldStartingIndex];
                             movedItems.Add(movedItem);
@@ -101,7 +98,7 @@ namespace MuVaViMo
                         int k = args.NewStartingIndex;
                         foreach(TResult movedItem in movedItems)
                         {
-                            _backingList.Insert(args.NewStartingIndex, movedItem);
+                            _backingList.Insert(k++, movedItem);
                         }
                         CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move,
                                                                                              movedItems, args.NewStartingIndex,

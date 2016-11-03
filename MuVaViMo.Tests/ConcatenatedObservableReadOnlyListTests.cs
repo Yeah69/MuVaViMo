@@ -21,10 +21,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = new ObservableCollection<A>();
             ObservableCollection<B> sourceCollectionB = new ObservableCollection<B>();
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
 
             //Act
 
@@ -39,10 +37,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
 
             //Act
 
@@ -57,10 +53,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             A addedA = new A();
             readOnlyList.CollectionChanged += (sender, args) =>
             {
@@ -82,10 +76,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             B addedB = new B();
             readOnlyList.CollectionChanged += (sender, args) =>
             {
@@ -107,10 +99,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             A insertedA = new A();
             int insertIndex = 1;
             readOnlyList.CollectionChanged += (sender, args) =>
@@ -133,10 +123,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             B insertedB = new B();
             int insertIndex = 1;
             readOnlyList.CollectionChanged += (sender, args) =>
@@ -159,10 +147,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int removedIndex = 1;
             A removedA = sourceCollectionA[removedIndex];
             readOnlyList.CollectionChanged += (sender, args) =>
@@ -185,10 +171,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int removedIndex = 1;
             B removedB = sourceCollectionB[removedIndex];
             readOnlyList.CollectionChanged += (sender, args) =>
@@ -211,10 +195,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int removedIndex = 1;
             A removedA = new A();
             sourceCollectionA.Insert(removedIndex, removedA);
@@ -238,10 +220,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int removedIndex = 1;
             B removedB = new B();
             sourceCollectionB.Insert(removedIndex, removedB);
@@ -265,10 +245,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             readOnlyList.CollectionChanged += (sender, args) =>
             {
                 Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
@@ -287,10 +265,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             readOnlyList.CollectionChanged += (sender, args) =>
             {
                 Assert.Equal(NotifyCollectionChangedAction.Reset, args.Action);
@@ -338,10 +314,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             B replacingB = new B();
             int replaceIndex = 1;
             B replacedB = (B)readOnlyList[sourceCollectionA.Count + replaceIndex];
@@ -367,10 +341,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int moveFromIndex = 1;
             int moveToIndex = 3;
             A movedA = sourceCollectionA[moveFromIndex];
@@ -395,10 +367,8 @@ namespace MuVaViMo.Tests
             //Arrange
             ObservableCollection<A> sourceCollectionA = FilledCollectionA;
             ObservableCollection<B> sourceCollectionB = FilledCollectionB;
-            WrappingObservableReadOnlyList<A> wrappedCollectionA = new WrappingObservableReadOnlyList<A>(sourceCollectionA);
-            WrappingObservableReadOnlyList<B> wrappedCollectionB = new WrappingObservableReadOnlyList<B>(sourceCollectionB);
             ConcatenatingObservableReadOnlyList<Super> readOnlyList =
-                new ConcatenatingObservableReadOnlyList<Super>(wrappedCollectionA, wrappedCollectionB);
+                ConcatenatingObservableReadOnlyList<Super>.Concatenate(sourceCollectionA, sourceCollectionB);
             int moveFromIndex = 1;
             int moveToIndex = 3;
             B movedB = sourceCollectionB[moveFromIndex];
