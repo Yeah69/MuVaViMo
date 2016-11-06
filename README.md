@@ -8,7 +8,7 @@ You can also install it via Nuget in your projects:
 
     Install-Package MuVaViMo
 
-Nuget page: https://www.nuget.org/packages/MuVaViMo/0.2.0
+Nuget page: https://www.nuget.org/packages/MuVaViMo
 
 ## Wiki #
 
