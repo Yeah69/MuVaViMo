@@ -1,7 +1,20 @@
-# MuVaViMo
+# MuVaViMo #
 
-Initially created for the TransformingObservableCollectionWrapper class.
-Maybe I will put some other WPF/MVVM stuff in here, if I come up with something useful.
+This project has classes, which could make your life easier while working with ObservableCollections and the Model View ViewModel (MVVM) pattern. You always wanted to encapsulate, concatenate or transfrom (for example, transform a Model to ViewModel) them and all that in synchronized manner while still keeping the change notification capabilities. Then MuVaViMo might be the right package for you!
+
+## Nuget #
+
+You can also install it via Nuget in your projects:
+
+    Install-Package MuVaViMo
+
+Nuget page: https://www.nuget.org/packages/MuVaViMo/0.2.0
+
+## Wiki #
+
+Detailed descriptions of the core classes and interfaces of this project you can find in the wiki of this GitHub repository (https://github.com/Yeah69/MuVaViMo/wiki).
+
+## License #
 
 Unlicense:
 
