@@ -11,12 +11,12 @@ namespace MuVaViMo
     /// <summary>
     /// This class observes and synchronizes with a observable collection with items of type TSource, but forwards the items transformed to type TResult. 
     /// </summary>
-    /// <typeparam name="TSource">Item's type of the obseved collection.</typeparam>
+    /// <typeparam name="TSource">Item's type of the observed collection.</typeparam>
     /// <typeparam name="TResult">Type of the forwarded items.</typeparam>
     public class TransformingObservableReadOnlyList<TSource, TResult> : IObservableReadOnlyList<TResult>
     {
         /// <summary>
-        /// All transformed items go here. Synchron to the source collection.
+        /// All transformed items go here. Synchronous to the source collection.
         /// </summary>
         private readonly IList<TResult> _backingList = new List<TResult>();
 

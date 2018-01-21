@@ -9,7 +9,7 @@ using System.Linq;
 namespace MuVaViMo
 {
     /// <summary>
-    /// Concatenate two obsevable collections/lists and synchronizes with them.
+    /// Concatenate two observable collections/lists and synchronizes with them.
     /// Note that there is no constructor for ObservableCollections directly, but there are comfortable static factory methods (Concatenate(...)) for that.
     /// </summary>
     /// <typeparam name="T">
@@ -28,7 +28,7 @@ namespace MuVaViMo
         private readonly IReadOnlyList<T> _secondBackingList;
 
         /// <summary>
-        /// Constructs a observable read only list, which concatinates two obsevable readonly lists.
+        /// Constructs a observable read only list, which concatenates two observable readonly lists.
         /// </summary>
         /// <param name="firstCollection"></param>
         /// <param name="secondCollection"></param>
@@ -160,13 +160,13 @@ namespace MuVaViMo
         #endregion
 
         /// <summary>
-        /// Constructs a concatenating read only list, which takes two ObsevableCollections (which are wrapped beforehand).
+        /// Constructs a concatenating read only list, which takes two ObservableCollections (which are wrapped beforehand).
         /// </summary>
         /// <typeparam name="TA">Item type of the first collection. Should inherit from T.</typeparam>
         /// <typeparam name="TB">Item type of the second collection. Should inherit from T.</typeparam>
         /// <param name="collectionA">First concatenated collection.</param>
         /// <param name="collectionB">Second concatenated collection.</param>
-        /// <returns>A concatenating read only list, which takes two ObsevableCollections.</returns>
+        /// <returns>A concatenating read only list, which takes two ObservableCollections.</returns>
         public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA, TB>(ObservableCollection<TA> collectionA,
                                                                                  ObservableCollection<TB> collectionB)
             where TA : class, T where TB : class, T
@@ -177,12 +177,12 @@ namespace MuVaViMo
         }
 
         /// <summary>
-        /// Constructs a concatenating read only list, which takes a ObsevableCollection (first) and another obsevable read only list (second).
+        /// Constructs a concatenating read only list, which takes a ObservableCollection (first) and another observable read only list (second).
         /// </summary>
         /// <typeparam name="TA">Item type of the first collection. Should inherit from T.</typeparam>
         /// <param name="collectionA">First concatenated collection.</param>
         /// <param name="collectionB">Second concatenated collection.</param>
-        /// <returns>A concatenating read only list, which takes a ObsevableCollection and another obsevable read only list.</returns>
+        /// <returns>A concatenating read only list, which takes a ObservableCollection and another observable read only list.</returns>
         public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA>(ObservableCollection<TA> collectionA,
                                                                              IObservableReadOnlyList<T> collectionB)
             where TA : class, T
@@ -192,12 +192,12 @@ namespace MuVaViMo
         }
 
         /// <summary>
-        /// Constructs a concatenating read only list, which takes a ObsevableCollection (second) and another obsevable read only list (first).
+        /// Constructs a concatenating read only list, which takes a ObservableCollection (second) and another observable read only list (first).
         /// </summary>
         /// <typeparam name="TB">Item type of the second collection. Should inherit from T.</typeparam>
         /// <param name="collectionA">First concatenated collection.</param>
         /// <param name="collectionB">Second concatenated collection.</param>
-        /// <returns>A concatenating read only list, which takes a ObsevableCollection and another obsevable read only list.</returns>
+        /// <returns>A concatenating read only list, which takes a ObservableCollection and another observable read only list.</returns>
         public static ConcatenatingObservableReadOnlyList<T> Concatenate<TB>(IObservableReadOnlyList<T> collectionA,
                                                                              ObservableCollection<TB> collectionB)
             where TB : class, T
@@ -211,7 +211,7 @@ namespace MuVaViMo
         /// </summary>
         /// <param name="collectionA">First concatenated collection.</param>
         /// <param name="collectionB">Second concatenated collection.</param>
-        /// <returns>A concatenating read only list, which takes two obsevable read only list.</returns>
+        /// <returns>A concatenating read only list, which takes two observable read only list.</returns>
         public static ConcatenatingObservableReadOnlyList<T> Concatenate(IObservableReadOnlyList<T> collectionA,
                                                                              IObservableReadOnlyList<T> collectionB)
         {

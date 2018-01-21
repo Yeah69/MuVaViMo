@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace MuVaViMo
 {
     /// <summary>
-    /// Wraps an ObsevableCollection and adds the IObservableReadOnlyList interface to it.
+    /// Wraps an ObservableCollection and adds the IObservableReadOnlyList interface to it.
     /// </summary>
     /// <typeparam name="T">Item type of the wrapped collection.</typeparam>
     public class WrappingObservableReadOnlyList<T> : IObservableReadOnlyList<T>
@@ -28,8 +28,8 @@ namespace MuVaViMo
 
         public event PropertyChangedEventHandler PropertyChanged
         {
-            add { ((INotifyPropertyChanged) _wrappedCollection).PropertyChanged += value; }
-            remove { ((INotifyPropertyChanged) _wrappedCollection).PropertyChanged -= value; }
+            add => ((INotifyPropertyChanged) _wrappedCollection).PropertyChanged += value;
+            remove => ((INotifyPropertyChanged) _wrappedCollection).PropertyChanged -= value;
         }
 
         public void Move(int oldIndex, int newIndex)
@@ -39,8 +39,8 @@ namespace MuVaViMo
 
         public event NotifyCollectionChangedEventHandler CollectionChanged
         {
-            add { _wrappedCollection.CollectionChanged += value; }
-            remove { _wrappedCollection.CollectionChanged -= value; }
+            add => _wrappedCollection.CollectionChanged += value;
+            remove => _wrappedCollection.CollectionChanged -= value;
         }
 
         public void Clear()
