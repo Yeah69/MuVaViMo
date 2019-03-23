@@ -16,6 +16,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>MVVM</PackageTags>
     <PackageLicenseUrl>https://github.com/Yeah69/MuVaViMo/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Yeah69/MuVaViMo/master/Icon/Yeah69Logo.ico</PackageIconUrl>
   </PropertyGroup>
 
 </Project>
