@@ -153,21 +153,28 @@ namespace MuVaViMo
 
         #region Implementation of IReadOnlyList<out T>
 
-        public T this[int index] => index < _firstBackingList.Count
-                                        ? _firstBackingList[index] 
-                                        : _secondBackingList[index - _firstBackingList.Count];
+        public T this[int index]
+        {
+            get
+            {
+                if(index< 0 || index> Count) throw new ArgumentOutOfRangeException(nameof(index));
+                return index<_firstBackingList.Count
+                    ? _firstBackingList[index] 
+                    : _secondBackingList[index - _firstBackingList.Count];
+            }
+        }
 
-        #endregion
+#endregion
 
-        /// <summary>
-        /// Constructs a concatenating read only list, which takes two ObservableCollections (which are wrapped beforehand).
-        /// </summary>
-        /// <typeparam name="TA">Item type of the first collection. Should inherit from T.</typeparam>
-        /// <typeparam name="TB">Item type of the second collection. Should inherit from T.</typeparam>
-        /// <param name="collectionA">First concatenated collection.</param>
-        /// <param name="collectionB">Second concatenated collection.</param>
-        /// <returns>A concatenating read only list, which takes two ObservableCollections.</returns>
-        public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA, TB>(ObservableCollection<TA> collectionA,
+/// <summary>
+/// Constructs a concatenating read only list, which takes two ObservableCollections (which are wrapped beforehand).
+/// </summary>
+/// <typeparam name="TA">Item type of the first collection. Should inherit from T.</typeparam>
+/// <typeparam name="TB">Item type of the second collection. Should inherit from T.</typeparam>
+/// <param name="collectionA">First concatenated collection.</param>
+/// <param name="collectionB">Second concatenated collection.</param>
+/// <returns>A concatenating read only list, which takes two ObservableCollections.</returns>
+public static ConcatenatingObservableReadOnlyList<T> Concatenate<TA, TB>(ObservableCollection<TA> collectionA,
                                                                                  ObservableCollection<TB> collectionB)
             where TA : class, T where TB : class, T
         {

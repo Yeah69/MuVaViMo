@@ -4,28 +4,40 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MuVaViMo
 {
     /// <summary>
-    /// Wraps an ObservableCollection and adds the IObservableReadOnlyList interface to it.
+    /// Wraps an ObservableCollection which is fetched by a task and adds the IObservableReadOnlyList interface to it.
     /// </summary>
     /// <typeparam name="T">Item type of the wrapped collection.</typeparam>
-    public class WrappingObservableReadOnlyList<T> : IObservableReadOnlyList<T>
+    public class DeferredWrappingObservableReadOnlyList<T> : IObservableReadOnlyList<T>
     {
         /// <summary>
         /// Wrapped collection.
         /// </summary>
-        private readonly ObservableCollection<T> _wrappedCollection;
+        private ObservableCollection<T> _wrappedCollection;
 
         /// <summary>
         /// Constructs a wrapping read only list, which synchronizes with the wrapped collection.
         /// </summary>
-        /// <param name="wrappedCollection">Wrapped collection.</param>
-        public WrappingObservableReadOnlyList(ObservableCollection<T> wrappedCollection)
+        /// <param name="wrappedCollectionTask">Task which fetches the wrapped collection.</param>
+        public DeferredWrappingObservableReadOnlyList(Task<ObservableCollection<T>> wrappedCollectionTask)
         {
-            _wrappedCollection = wrappedCollection;
-            ConnectToCollectionChanged(wrappedCollection, wrappedCollection);
+            wrappedCollectionTask.ContinueWith(async t =>
+            {
+                try
+                {
+                    var observableCollection = await t.ConfigureAwait(false);
+                    _wrappedCollection = observableCollection;
+                    ConnectToCollectionChanged(observableCollection, observableCollection);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            });
         }
 
         /// <summary>
@@ -43,13 +55,13 @@ namespace MuVaViMo
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        public int Count => _wrappedCollection.Count;
-
+        public int Count => _wrappedCollection?.Count ?? 0;
+        
         #region Implementation of IEnumerable
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _wrappedCollection.GetEnumerator();
+            return _wrappedCollection?.GetEnumerator() ?? Enumerable.Empty<T>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -65,7 +77,8 @@ namespace MuVaViMo
         {
             get
             {
-                if (index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
+                if(_wrappedCollection is null) throw new Exception("Not initialized yet");
+                if(index < 0 || index > Count) throw new ArgumentOutOfRangeException(nameof(index));
                 return _wrappedCollection[index];
             }
         }

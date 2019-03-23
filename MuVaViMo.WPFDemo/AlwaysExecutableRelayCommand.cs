@@ -20,5 +20,10 @@ namespace MuVaViMo.WPFDemo
         public event EventHandler CanExecuteChanged;
 
         #endregion
+
+        protected virtual void OnCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

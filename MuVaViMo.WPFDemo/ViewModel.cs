@@ -8,7 +8,7 @@ namespace MuVaViMo.WPFDemo
 
         public int Number
         {
-            get { return _model.Number; }
+            get => _model.Number;
             set
             {
                 if(_model.Number == value) return;

@@ -78,5 +78,20 @@ namespace MuVaViMo
 
             return new ReadOnlyObservableCollection<T>(observableCollection);
         }
+        public static IObservableReadOnlyList<TResult> Transform<TSource, TResult>(
+            this IObservableReadOnlyList<TSource> source, Func<TSource, TResult> transform)
+            => new TransformingObservableReadOnlyList<TSource, TResult>(source, transform);
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, ObservableCollection<T> second)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second.ToObservableReadOnlyList());
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, IObservableReadOnlyList<T> second)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second);
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, ReadOnlyObservableCollection<T> second)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second.ToObservableReadOnlyList());
     }
 }

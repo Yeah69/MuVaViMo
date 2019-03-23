@@ -25,6 +25,23 @@ namespace MuVaViMo
         /// </summary>
         /// <param name="source">Collection to synchronize with.</param>
         /// <param name="transform">Logic to transform a TSource object to a TResult object.</param>
+        public TransformingObservableReadOnlyList(IEnumerable<TSource> source, Func<TSource, TResult> transform)
+        {
+            //The source collection may already have items. Thus, they are transformed and added to the backing list.
+            foreach (TSource from in source)
+            {
+                _backingList.Add(transform(from));
+            }
+
+            if(source is INotifyCollectionChanged collectionChanged)
+                ConnectToCollectionChanged(collectionChanged, transform);
+        }
+
+        /// <summary>
+        /// Constructs a TransformingObservableReadOnlyList synchronizing with an ObservableCollection source.
+        /// </summary>
+        /// <param name="source">Collection to synchronize with.</param>
+        /// <param name="transform">Logic to transform a TSource object to a TResult object.</param>
         public TransformingObservableReadOnlyList(ObservableCollection<TSource> source, Func<TSource, TResult> transform)
         {
             //The source collection may already have items. Thus, they are transformed and added to the backing list.
@@ -176,7 +193,14 @@ namespace MuVaViMo
 
         #region Implementation of IReadOnlyList<out TResult>
 
-        public TResult this[int index] => _backingList[index];
+        public TResult this[int index]
+        {
+            get
+            {
+                if(index< 0 || index> Count) throw new ArgumentOutOfRangeException(nameof(index));
+                return _backingList[index];
+            }
+        }
 
         #endregion
     }

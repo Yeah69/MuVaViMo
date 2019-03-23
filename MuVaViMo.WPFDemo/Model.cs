@@ -6,7 +6,7 @@
 
         public int Number
         {
-            get { return _number; }
+            get => _number;
             set
             {
                 if(_number == value) return;
