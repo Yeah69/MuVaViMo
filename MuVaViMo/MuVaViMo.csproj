@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
     <PackageId>MuVaViMo</PackageId>
-    <Version>0.3.2</Version>
+    <Version>0.3.3</Version>
     <Authors>Dimitri Enns</Authors>
     <Company />
     <Product>MuVaViMo</Product>
@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/Yeah69/MuVaViMo</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>MVVM</PackageTags>
-    <PackageLicenseUrl>https://github.com/Yeah69/MuVaViMo/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Yeah69/MuVaViMo/master/Icon/Yeah69Logo.ico</PackageIconUrl>
   </PropertyGroup>
 

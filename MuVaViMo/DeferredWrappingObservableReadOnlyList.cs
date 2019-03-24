@@ -13,12 +13,14 @@ namespace MuVaViMo
     /// Wraps an ObservableCollection which is fetched by a task and adds the IObservableReadOnlyList interface to it.
     /// </summary>
     /// <typeparam name="T">Item type of the wrapped collection.</typeparam>
-    public class DeferredWrappingObservableReadOnlyList<T> : IObservableReadOnlyList<T>
+    public class DeferredWrappingObservableReadOnlyList<T> : IDeferredObservableReadOnlyList<T>
     {
         /// <summary>
         /// Wrapped collection.
         /// </summary>
         private ObservableCollection<T> _wrappedCollection;
+
+        private readonly Task _initialization;
 
         /// <summary>
         /// Constructs a wrapping read only list, which synchronizes with the wrapped collection.
@@ -26,7 +28,7 @@ namespace MuVaViMo
         /// <param name="wrappedCollectionTask">Task which fetches the wrapped collection.</param>
         public DeferredWrappingObservableReadOnlyList(Task<ObservableCollection<T>> wrappedCollectionTask)
         {
-            wrappedCollectionTask.ContinueWith(async t =>
+            _initialization = wrappedCollectionTask.ContinueWith(async t =>
             {
                 try
                 {
@@ -84,5 +86,8 @@ namespace MuVaViMo
         }
 
         #endregion
+
+        public Task<IDeferredObservableReadOnlyList<T>> InitializedCollectionAsync => 
+            _initialization.ContinueWith(_ => (IDeferredObservableReadOnlyList<T>) this);
     }
 }

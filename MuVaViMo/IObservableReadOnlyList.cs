@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MuVaViMo
 {
@@ -17,6 +18,19 @@ namespace MuVaViMo
     /// <typeparam name="T">Co-variant type of the list's items.</typeparam>
     public interface IObservableReadOnlyList<out T> : IReadOnlyList<T>, INotifyCollectionChanged, INotifyPropertyChanged
     {
+    }
+
+    /// <summary>
+    /// The deferred collection has an initialization process which may not be finished by the end of the construction, for example
+    /// by initialization with a Task. This interface therefore extends an awaitable property which returns the collection itself after initialization.
+    /// </summary>
+    /// <typeparam name="T">Co-variant type of the list's items.</typeparam>
+    public interface IDeferredObservableReadOnlyList<T> : IObservableReadOnlyList<T>
+    {
+        /// <summary>
+        /// The collection itself after the initialization is done.
+        /// </summary>
+        Task<IDeferredObservableReadOnlyList<T>> InitializedCollectionAsync { get; }
     }
 
     public static class ObservableReadOnlyListExtensions
