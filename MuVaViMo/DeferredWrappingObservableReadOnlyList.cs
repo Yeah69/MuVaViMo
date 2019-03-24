@@ -49,6 +49,7 @@ namespace MuVaViMo
         /// <param name="property">The collection to connect to.</param>
         private void ConnectToCollectionChanged(INotifyCollectionChanged collection, INotifyPropertyChanged property)
         {
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, _wrappedCollection));
             collection.CollectionChanged += (sender, args) => CollectionChanged?.Invoke(this, args);
             property.PropertyChanged += (sender, args) => PropertyChanged?.Invoke(this, args);
         }
@@ -87,7 +88,11 @@ namespace MuVaViMo
 
         #endregion
 
+        #region Implementation of IDeferredObservableReadOnlyList<T>
+
         public Task<IDeferredObservableReadOnlyList<T>> InitializedCollectionAsync => 
             _initialization.ContinueWith(_ => (IDeferredObservableReadOnlyList<T>) this);
+
+        #endregion
     }
 }
