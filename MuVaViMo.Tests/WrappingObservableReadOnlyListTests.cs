@@ -110,7 +110,7 @@ namespace MuVaViMo.Tests
             ObservableCollection<A> filledCollection = FilledSourceCollection;
             WrappingObservableReadOnlyList<A> readOnlyList = new WrappingObservableReadOnlyList<A>(filledCollection);
             int removedIndex = 1;
-            A removedA = new A();
+            A removedA = filledCollection[removedIndex];
             filledCollection.Insert(removedIndex, removedA);
             readOnlyList.CollectionChanged += (sender, args) =>
             {
@@ -120,7 +120,7 @@ namespace MuVaViMo.Tests
             };
 
             //Act
-            filledCollection.RemoveAt(removedIndex);
+            filledCollection.Remove(removedA);
 
             //Assert
             StandardCheck(filledCollection, readOnlyList);

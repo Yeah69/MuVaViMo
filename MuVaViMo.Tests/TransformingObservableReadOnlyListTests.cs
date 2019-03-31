@@ -132,7 +132,7 @@ namespace MuVaViMo.Tests
             };
 
             //Act
-            filledCollection.RemoveAt(removedIndex);
+            filledCollection.Remove(removedA);
 
             //Assert
             StandardCheck(filledCollection, readOnlyList);

@@ -208,7 +208,7 @@ namespace MuVaViMo.Tests
             };
 
             //Act
-            sourceCollectionA.RemoveAt(removedIndex);
+            sourceCollectionA.Remove(removedA);
 
             //Assert
             StandardCheck(sourceCollectionA, sourceCollectionB, readOnlyList);
@@ -233,7 +233,7 @@ namespace MuVaViMo.Tests
             };
 
             //Act
-            sourceCollectionB.RemoveAt(removedIndex);
+            sourceCollectionB.Remove(removedB);
 
             //Assert
             StandardCheck(sourceCollectionA, sourceCollectionB, readOnlyList);

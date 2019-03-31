@@ -49,7 +49,7 @@ namespace MuVaViMo
         /// <param name="property">The collection to connect to.</param>
         private void ConnectToCollectionChanged(INotifyCollectionChanged collection, INotifyPropertyChanged property)
         {
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, _wrappedCollection));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, _wrappedCollection, 0));
             collection.CollectionChanged += (sender, args) => CollectionChanged?.Invoke(this, args);
             property.PropertyChanged += (sender, args) => PropertyChanged?.Invoke(this, args);
         }
