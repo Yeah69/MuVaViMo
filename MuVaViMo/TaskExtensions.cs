@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 
 namespace MuVaViMo
@@ -48,5 +49,17 @@ namespace MuVaViMo
         /// <returns></returns>
         public static IDeferredObservableReadOnlyList<TItem> ToObservableReadOnlyList<TItem>(
             this Task<ObservableCollection<TItem>> task) => new DeferredWrappingObservableReadOnlyList<TItem>(task);
+
+        /// <summary>
+        /// The observable collection which the task fetches is transformed to an IDeferredObservableReadOnlyList.
+        /// The IDeferredObservableReadOnlyList however is returned immediately and connects to the observable connection as soon as the task is completed.
+        /// The IDeferredObservableReadOnlyList stays connected to the observable collection and forwards all the notifications.
+        /// </summary>
+        /// <typeparam name="TItem">Item type.</typeparam>
+        /// <param name="task">Task which fetches the observable collection.</param>
+        /// <returns></returns>
+        public static IDeferredObservableReadOnlyList<TItem> ToObservableReadOnlyList<TItem>(
+            this Task<ObservableCollection<TItem>> task,
+            IScheduler notificationScheduler) => new DeferredWrappingObservableReadOnlyList<TItem>(task, notificationScheduler);
     }
 }

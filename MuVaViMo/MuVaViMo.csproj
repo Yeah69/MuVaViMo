@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>MuVaViMo</PackageId>
-    <Version>0.3.6</Version>
+    <Version>0.4.0</Version>
     <Authors>Dimitri Enns</Authors>
     <Company />
     <Product>MuVaViMo</Product>
@@ -18,5 +18,9 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Yeah69/MuVaViMo/master/Icon/Yeah69Logo.ico</PackageIconUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reactive" Version="4.1.6" />
+  </ItemGroup>
 
 </Project>

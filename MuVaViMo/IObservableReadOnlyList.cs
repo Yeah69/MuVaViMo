@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 
 namespace MuVaViMo
@@ -107,5 +108,21 @@ namespace MuVaViMo
         public static IObservableReadOnlyList<T> Concatenate<T>(
             this IObservableReadOnlyList<T> first, ReadOnlyObservableCollection<T> second)
             => new ConcatenatingObservableReadOnlyList<T>(first, second.ToObservableReadOnlyList());
+
+        public static IObservableReadOnlyList<TResult> Transform<TSource, TResult>(
+            this IObservableReadOnlyList<TSource> source, Func<TSource, TResult> transform, IScheduler notificationScheduler)
+            => new TransformingObservableReadOnlyList<TSource, TResult>(source, transform, notificationScheduler);
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, ObservableCollection<T> second, IScheduler notificationScheduler)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second.ToObservableReadOnlyList(), notificationScheduler);
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, IObservableReadOnlyList<T> second, IScheduler notificationScheduler)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second, notificationScheduler);
+
+        public static IObservableReadOnlyList<T> Concatenate<T>(
+            this IObservableReadOnlyList<T> first, ReadOnlyObservableCollection<T> second, IScheduler notificationScheduler)
+            => new ConcatenatingObservableReadOnlyList<T>(first, second.ToObservableReadOnlyList(), notificationScheduler);
     }
 }

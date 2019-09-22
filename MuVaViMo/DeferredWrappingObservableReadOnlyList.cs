@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 
 namespace MuVaViMo
@@ -43,15 +45,43 @@ namespace MuVaViMo
         }
 
         /// <summary>
-        /// Connects to the given collection and forwards the notification events.
+        /// Constructs a wrapping read only list, which synchronizes with the wrapped collection.
         /// </summary>
-        /// <param name="collection">The collection to connect to.</param>
-        /// <param name="property">The collection to connect to.</param>
+        /// <param name="wrappedCollectionTask">Task which fetches the wrapped collection.</param>
+        /// <param name="notificationScheduler">On this scheduler the notifications are emitted.</param>
+        public DeferredWrappingObservableReadOnlyList(Task<ObservableCollection<T>> wrappedCollectionTask, IScheduler notificationScheduler)
+        {
+            _initialization = wrappedCollectionTask.ContinueWith(async t =>
+            {
+                try
+                {
+                    var observableCollection = await t.ConfigureAwait(false);
+                    _wrappedCollection = observableCollection;
+                    ConnectToCollectionChangedOnScheduler(observableCollection, observableCollection, notificationScheduler);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+            });
+        }
+
         private void ConnectToCollectionChanged(INotifyCollectionChanged collection, INotifyPropertyChanged property)
         {
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, _wrappedCollection, 0));
             collection.CollectionChanged += (sender, args) => CollectionChanged?.Invoke(this, args);
             property.PropertyChanged += (sender, args) => PropertyChanged?.Invoke(this, args);
+        }
+
+        private void ConnectToCollectionChangedOnScheduler(INotifyCollectionChanged collection, INotifyPropertyChanged property, IScheduler notificationScheduler)
+        {
+            notificationScheduler.Schedule(Unit.Default, (_, __) =>
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, _wrappedCollection, 0)));
+            collection.CollectionChanged += (sender, args) => 
+                notificationScheduler.Schedule(Unit.Default, (_, __) => 
+                    CollectionChanged?.Invoke(this, args));
+            property.PropertyChanged += (sender, args) => 
+                notificationScheduler.Schedule(Unit.Default, (_, __) => 
+                    PropertyChanged?.Invoke(this, args));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Concurrency;
 
 namespace MuVaViMo
 {
@@ -41,78 +43,88 @@ namespace MuVaViMo
         }
 
         /// <summary>
-        /// Connects both source collection to this collection and forwards the events of both.
+        /// Constructs a observable read only list, which concatenates two observable readonly lists.
         /// </summary>
-        /// <param name="firstCollection">First concatenated list.</param>
-        /// <param name="secondCollection">Second concatenated list.</param>
+        /// <param name="firstCollection"></param>
+        /// <param name="secondCollection"></param>
+        /// <param name="notificationScheduler">On this scheduler the notifications are emitted.</param>
+        public ConcatenatingObservableReadOnlyList(IObservableReadOnlyList<T> firstCollection, IObservableReadOnlyList<T> secondCollection, IScheduler notificationScheduler)
+        {
+            _firstBackingList = firstCollection;
+            _secondBackingList = secondCollection;
+
+            ConnectToCollectionChangedOnScheduler(firstCollection, secondCollection, notificationScheduler);
+        }
+
         private void ConnectToCollectionChanged(INotifyCollectionChanged firstCollection, INotifyCollectionChanged secondCollection)
         {
-            firstCollection.CollectionChanged += (sender, args) =>
-            {
-                switch(args.Action)
-                {
-                    case NotifyCollectionChangedAction.Add:
-                    case NotifyCollectionChangedAction.Remove:
-                        CollectionChanged?.Invoke(this, args);
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    case NotifyCollectionChangedAction.Move:
-                    case NotifyCollectionChangedAction.Replace:
-                        CollectionChanged?.Invoke(this, args);
-                        if(args.NewItems?.Count != args.OldItems?.Count)
-                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    case NotifyCollectionChangedAction.Reset:
-                        CollectionChanged?.Invoke(this, args);
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    default:
-                        throw new Exception("Something unexpected happened with the source collection.");
-                }
-            };
 
-            secondCollection.CollectionChanged += (sender, args) =>
+            firstCollection.CollectionChanged += (_, args) => OnFirstCollectionChanged(args);
+
+            secondCollection.CollectionChanged += (_, args) => OnSecondCollectionChanged(args);
+        }
+
+        private void ConnectToCollectionChangedOnScheduler(INotifyCollectionChanged firstCollection, INotifyCollectionChanged secondCollection, IScheduler notificationScheduler)
+        {
+
+            firstCollection.CollectionChanged += (_, args) => 
+                notificationScheduler.Schedule(Unit.Default, (__, ___) => 
+                    OnFirstCollectionChanged(args));
+
+            secondCollection.CollectionChanged += (_, args) => 
+                notificationScheduler.Schedule(Unit.Default, (__, ___) => 
+                    OnSecondCollectionChanged(args));
+        }
+
+        private void OnFirstCollectionChanged(NotifyCollectionChangedEventArgs args)
+        {
+            switch (args.Action)
             {
-                switch(args.Action)
-                {
-                    case NotifyCollectionChangedAction.Add:
-                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action,
-                                                                                             args.NewItems,
-                                                                                             args.NewStartingIndex +
-                                                                                             _firstBackingList.Count));
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    case NotifyCollectionChangedAction.Remove:
-                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action,
-                                                                                             args.OldItems,
-                                                                                             args.OldStartingIndex +
-                                                                                             _firstBackingList.Count));
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    case NotifyCollectionChangedAction.Move:
-                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action,
-                                                                                             args.NewItems,
-                                                                                             args.NewStartingIndex +
-                                                                                             _firstBackingList.Count,
-                                                                                             args.OldStartingIndex +
-                                                                                             _firstBackingList.Count));
-                        break;
-                    case NotifyCollectionChangedAction.Replace:
-                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action,
-                                                                                             args.NewItems, args.OldItems,
-                                                                                             args.OldStartingIndex +
-                                                                                             _firstBackingList.Count));
-                        if (args.NewItems?.Count != args.OldItems?.Count)
-                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    case NotifyCollectionChangedAction.Reset:
-                        CollectionChanged?.Invoke(this, args);
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
-                        break;
-                    default:
-                        throw new Exception("Something unexpected happened with the source collection.");
-                }
-            };
+                case NotifyCollectionChangedAction.Add:
+                case NotifyCollectionChangedAction.Remove:
+                    CollectionChanged?.Invoke(this, args);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
+                    CollectionChanged?.Invoke(this, args);
+                    if (args.NewItems?.Count != args.OldItems?.Count) PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    CollectionChanged?.Invoke(this, args);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                default:
+                    throw new Exception("Something unexpected happened with the source collection.");
+            }
+        }
+
+        private void OnSecondCollectionChanged(NotifyCollectionChangedEventArgs args)
+        {
+            switch (args.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action, args.NewItems, args.NewStartingIndex + _firstBackingList.Count));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action, args.OldItems, args.OldStartingIndex + _firstBackingList.Count));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                case NotifyCollectionChangedAction.Move:
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action, args.NewItems, args.NewStartingIndex + _firstBackingList.Count, args.OldStartingIndex + _firstBackingList.Count));
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(args.Action, args.NewItems, args.OldItems, args.OldStartingIndex + _firstBackingList.Count));
+                    if (args.NewItems?.Count != args.OldItems?.Count) PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    CollectionChanged?.Invoke(this, args);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+                    break;
+                default:
+                    throw new Exception("Something unexpected happened with the source collection.");
+            }
         }
 
         #region Implementation of IEnumerable
